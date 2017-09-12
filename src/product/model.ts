@@ -7,7 +7,7 @@ const schema = new Schema(
       ref: '__store_category',
       required: true,
     },
-    field: {},
+    fields: {},
     filters: {},
   },
   {
