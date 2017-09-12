@@ -6,7 +6,7 @@ import Model from './model';
 import { IConfig } from '../config';
 
 export default class Controller {
-  constructor(private config: IConfig) { }
+  constructor(private config: IConfig) {}
   // Gets a list of Models
   public index = async (ctx: IContext) => {
     try {

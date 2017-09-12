@@ -1,28 +1,32 @@
 # Installation
 
 ```bash
-ycs add plugin bookmark
+ycs add plugin store
 ```
 
 # configurations
 
 ```ts
-import { IConfig } from 'ycs-plugin-bookmark';
+import { IConfig } from 'ycs-plugin-store';
 
 export const development: IConfig = {
-  endpoint: '/bookmark',
-  categories: ['A', 'B', 'C'],
+  endpoint: '/store',
+  roles: ['store'],
   errors: {
-    empty: 'empty content'
-  },
+    empty: 'empty content',
+    categoryRequired: 'category required',
+    categoryNotFound: 'category not found'
+  }
 };
 
 export const production: IConfig = {
-  endpoint: '/bookmark',
-  categories: ['A', 'B', 'C'],
+  endpoint: '/store',
+  roles: ['store'],
   errors: {
-    empty: 'empty content'
-  },
+    empty: 'empty content',
+    categoryRequired: 'category required',
+    categoryNotFound: 'category not found'
+  }
 };
 
 ```

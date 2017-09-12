@@ -6,10 +6,18 @@ const schema = new Schema(
       type: String,
       required: true,
     },
-    filters: [{
-      type: Schema.Types.ObjectId,
-      ref: '__store_filter',
-    }],
+    fields: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: '__store_field',
+      },
+    ],
+    filters: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: '__store_filter',
+      },
+    ],
   },
   {
     timestamps: {},
@@ -21,4 +29,3 @@ export default Model({
   auth: true,
   schema,
 });
-

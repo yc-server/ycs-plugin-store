@@ -1,26 +1,21 @@
 import { IModel, Model, Schema } from '@ycs/core/lib/db';
-import { IConfig } from './config';
 
-export function createModel(config: IConfig): IModel {
-  const schema = new Schema(
-    {
-      category: {
-        type: String,
-        enum: config.categories,
-        required: true,
-      },
-      target: {
-        type: String,
-        required: true,
-      },
+const schema = new Schema(
+  {
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: '__store_category',
+      required: true,
     },
-    {
-      timestamps: {},
-    }
-  );
-  return Model({
-    name: '__bookmark',
-    auth: true,
-    schema,
-  });
-}
+    field: {},
+    filters: {},
+  },
+  {
+    timestamps: {},
+  }
+);
+export default Model({
+  name: '__store_product',
+  auth: true,
+  schema,
+});

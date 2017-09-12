@@ -5,5 +5,7 @@ export interface IConfig {
   roles: string[];
   errors: {
     empty: string;
+    categoryRequired: string;
+    categoryNotFound: string;
   };
 }
