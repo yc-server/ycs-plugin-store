@@ -1,6 +1,6 @@
 {
   "name": "ycs-plugin-store",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "ycs-plugin-store",
   "license": "MIT",
   "repository": "https://github.com/yc-server/ycs-plugin-store.git",
