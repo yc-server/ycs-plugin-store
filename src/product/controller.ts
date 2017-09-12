@@ -49,6 +49,7 @@ export default class Controller {
         ctx.request.fields.category
       ).exec();
       if (!category) throw Boom.badData(this.config.errors.categoryNotFound);
+      ctx.request.fields.__auth = ctx.request.auth._id;
       const entity = await Model.create(ctx.request.fields);
       response(ctx, 201, entity);
     } catch (e) {
