@@ -36,6 +36,7 @@ export default class Controller {
     try {
       if (!ctx.request.fields) throw Boom.badData(this.config.errors.empty);
       delete ctx.request.fields._id;
+      ctx.request.fields.__auth = ctx.request.auth._id;
       const entity = await Model.create(ctx.request.fields);
       response(ctx, 201, entity);
     } catch (e) {

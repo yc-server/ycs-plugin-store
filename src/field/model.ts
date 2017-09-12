@@ -5,6 +5,10 @@ const schema = new Schema({
     type: String,
     required: true,
   },
+  variable: {
+    type: String,
+    required: true,
+  },
   type: {
     type: String,
     enum: ['number', 'text', 'textarea', 'image', 'images'],
