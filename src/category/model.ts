@@ -6,6 +6,9 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+    icon: {
+      type: String,
+    },
     fields: [
       {
         type: Schema.Types.ObjectId,
