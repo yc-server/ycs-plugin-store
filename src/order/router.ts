@@ -11,7 +11,7 @@ export function routes(config: IConfig) {
       path: '/',
       methods: ['get'],
       auth: {
-        type: 'isAuthenticated'
+        type: 'isAuthenticated',
       },
       controller: controller.index,
       tags: ['__store_order'],
@@ -33,7 +33,7 @@ export function routes(config: IConfig) {
       path: '/',
       methods: ['post'],
       auth: {
-        type: 'isAuthenticated'
+        type: 'isAuthenticated',
       },
       controller: controller.create,
       tags: ['__store_order'],
@@ -41,21 +41,23 @@ export function routes(config: IConfig) {
       description: 'Create a document',
       consumes: ['application/json', 'application/xml'],
       produces: ['application/json', 'application/xml'],
-      parameters: [{
-        in: 'body',
-        name: 'body',
-        required: true,
-        schema: {
-          type: 'object',
-          properties: {
-            product: {
-              type: 'string',
-              required: true
-            }
+      parameters: [
+        {
+          in: 'body',
+          name: 'body',
+          required: true,
+          schema: {
+            type: 'object',
+            properties: {
+              product: {
+                type: 'string',
+                required: true,
+              },
+            },
+            xml: { name: 'xml' },
           },
-          xml: { name: 'xml' },
-        }
-      }],
+        },
+      ],
       responses: {
         201: {
           description: 'Successful operation',

@@ -8,21 +8,19 @@ import { IConfig } from '../config';
 import * as utils from './utils';
 
 function isSub(arr: any[], sub: any[]) {
-  for (const x of sub)
-    if (!arr.includes(x)) return false;
+  for (const x of sub) if (!arr.includes(x)) return false;
   return true;
 }
 
 export default class Controller {
-  constructor(private config: IConfig) { }
+  constructor(private config: IConfig) {}
   // Gets a list of Models
   public index = async (ctx: IContext) => {
     try {
       let filter = {
-        __auth: ctx.request.auth._id
+        __auth: ctx.request.auth._id,
       };
-      if (isSub(ctx.request.auth.roles, this.config.roles))
-        filter = null;
+      if (isSub(ctx.request.auth.roles, this.config.roles)) filter = null;
       const paginateResult = await paginate(Model, ctx, filter);
       response(ctx, 200, paginateResult);
     } catch (e) {
@@ -48,14 +46,17 @@ export default class Controller {
   public create = async (ctx: IContext) => {
     try {
       if (!ctx.request.fields) throw Boom.badData(this.config.errors.empty);
-      if (!ctx.request.fields.product) throw Boom.badData(this.config.errors.productNotFound);
+      if (!ctx.request.fields.product)
+        throw Boom.badData(this.config.errors.productNotFound);
       delete ctx.request.fields._id;
       delete ctx.request.fields.logs;
       delete ctx.request.fields.status;
       delete ctx.request.fields.refund;
       delete ctx.request.fields.paidBy;
       ctx.request.fields.__auth = ctx.request.auth._id;
-      const product = await ProductModel.findById(ctx.request.fields.product).exec();
+      const product = await ProductModel.findById(
+        ctx.request.fields.product
+      ).exec();
       if (!product) throw Boom.badData(this.config.errors.productNotFound);
       ctx.request.fields.price = this.config.orderPrice(product);
       const entity = await Model.create(ctx.request.fields);
@@ -85,20 +86,19 @@ export default class Controller {
     const entity: any = await Model.findById(ctx.params.id).exec();
     if (!entity) throw Boom.notFound();
     const action: string = ctx.request.fields.action;
-    if(action.startsWith('customer')) {
-      if(entity.__auth != ctx.request.auth._id)
-        throw Boom.forbidden();
+    if (action.startsWith('customer')) {
+      if (entity.__auth != ctx.request.auth._id) throw Boom.forbidden();
     } else {
-      if(!isSub(ctx.request.auth.roles, this.config.roles))
+      if (!isSub(ctx.request.auth.roles, this.config.roles))
         throw Boom.forbidden();
     }
     try {
-      await utils.act(entity, action, ctx.request.fields.msg, ctx.request)
+      await utils.act(entity, action, ctx.request.fields.msg, ctx.request);
       response(ctx, 200, entity);
     } catch (e) {
       handleError(ctx, e);
     }
-  }
+  };
 
   // Deletes a Model from the DB
   public destroy = async (ctx: IContext) => {

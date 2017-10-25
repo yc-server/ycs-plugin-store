@@ -1,14 +1,20 @@
 import Log from '../order_log/model';
 
-export async function act(entity: any, action: string, msg?: string, extra?: any) {
+export async function act(
+  entity: any,
+  action: string,
+  msg?: string,
+  extra?: any
+) {
   await Log.create({
     order: entity._id,
     action: action,
     msg: msg,
-    extra: extra
+    extra: extra,
   });
   switch (action) {
-    case 'customer-create': return;
+    case 'customer-create':
+      return;
     case 'customer-refund':
       entity.refund = 'pending';
       await entity.save();

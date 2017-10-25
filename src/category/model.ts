@@ -7,7 +7,7 @@ const schema = new Schema(
       required: true,
     },
     icon: {
-      type: String
+      type: String,
     },
     fields: [
       {
