@@ -19,7 +19,7 @@ export async function setupRouter(app: Ycs): Promise<Router[]> {
     productRouters(config),
     orderRouters(config),
     orderLogRouters(config),
-    orderWrapRouters(config),
+    orderWrapRouters(config)
   );
 
   return routers;
