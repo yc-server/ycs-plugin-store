@@ -6,7 +6,7 @@ import { IConfig } from '../config';
 export function routes(config: IConfig) {
   const controller = new Controller(config);
   return Model.routes(
-    `${config.endpoint}/orders`,
+    `${config.endpoint}/order/wraps`,
     {
       path: '/',
       methods: ['get'],
@@ -14,7 +14,7 @@ export function routes(config: IConfig) {
         type: 'isAuthenticated',
       },
       controller: controller.index,
-      tags: ['__store_order'],
+      tags: ['__store_order_wrap'],
       summary: 'List documents',
       description: 'List documents',
       consumes: ['application/json', 'application/xml'],
@@ -36,7 +36,7 @@ export function routes(config: IConfig) {
         type: 'isAuthenticated',
       },
       controller: controller.create,
-      tags: ['__store_order'],
+      tags: ['__store_order_wrap'],
       summary: 'Create a document',
       description: 'Create a document',
       consumes: ['application/json', 'application/xml'],
@@ -49,8 +49,12 @@ export function routes(config: IConfig) {
           schema: {
             type: 'object',
             properties: {
-              product: {
-                type: 'string',
+              products: {
+                type: 'array',
+                items: {
+                  type: 'string',
+                  required: true,
+                },
                 required: true,
               },
             },
@@ -71,34 +75,18 @@ export function routes(config: IConfig) {
       path: '/:id',
       methods: ['post'],
       auth: {
-        type: 'ownsOrHasRoles',
+        type: 'hasRoles',
         roles: config.roles,
       },
-      controller: controller.action,
-      tags: ['__store_order'],
-      summary: 'Customer operation',
-      description: 'Customer operation',
+      controller: controller.cancel,
+      tags: ['__store_order_wrap'],
+      summary: 'Cancel orders',
+      description: 'Cancel orders',
       consumes: ['application/json', 'application/xml'],
       produces: ['application/json', 'application/xml'],
-      parameters: [
-        {
-          in: 'body',
-          name: 'body',
-          required: true,
-          schema: {
-            type: 'object',
-            properties: {
-              action: {
-                type: 'string',
-                required: true,
-              },
-            },
-            xml: { name: 'xml' },
-          },
-        },
-      ],
+      parameters: [],
       responses: {
-        200: {
+        201: {
           description: 'Successful operation',
           schema: Model.docSchema.result,
         },
@@ -110,7 +98,7 @@ export function routes(config: IConfig) {
       path: '/:id',
       methods: ['get'],
       controller: controller.show,
-      tags: ['__store_order'],
+      tags: ['__store_order_wrap'],
       summary: 'Retrieve a document',
       description: 'Retrieve a document',
       consumes: ['application/json', 'application/xml'],
@@ -133,7 +121,7 @@ export function routes(config: IConfig) {
         roles: config.roles,
       },
       controller: controller.update,
-      tags: ['__store_order'],
+      tags: ['__store_order_wrap'],
       summary: 'Modify a document',
       description: 'Modify a document',
       consumes: ['application/json', 'application/xml'],
@@ -156,7 +144,7 @@ export function routes(config: IConfig) {
         roles: config.roles,
       },
       controller: controller.destroy,
-      tags: ['__store_order'],
+      tags: ['__store_order_wrap'],
       summary: 'Delete a document',
       description: 'Delete a document',
       produces: ['text/plain'],

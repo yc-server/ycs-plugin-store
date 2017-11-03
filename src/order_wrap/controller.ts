@@ -4,8 +4,9 @@ import { Boom, handleError } from '@ycs/core/lib/errors';
 import { response } from '@ycs/core/lib/response';
 import Model from './model';
 import ProductModel from '../product/model';
+import OrderModel from '../order/model';
 import { IConfig } from '../config';
-import * as utils from './utils';
+import * as utils from '../order/utils';
 
 function isSub(arr: any[], sub: any[]) {
   for (const x of sub) if (!arr.includes(x)) return false;
@@ -46,21 +47,28 @@ export default class Controller {
   public create = async (ctx: IContext) => {
     try {
       if (!ctx.request.fields) throw Boom.badData(this.config.errors.empty);
-      if (!ctx.request.fields.product)
+      if (!ctx.request.fields.products)
         throw Boom.badData(this.config.errors.productNotFound);
-      delete ctx.request.fields._id;
-      delete ctx.request.fields.logs;
-      delete ctx.request.fields.status;
-      delete ctx.request.fields.refund;
-      delete ctx.request.fields.paidBy;
-      ctx.request.fields.__auth = ctx.request.auth._id;
-      const product = await ProductModel.findById(
-        ctx.request.fields.product
-      ).exec();
-      if (!product) throw Boom.badData(this.config.errors.productNotFound);
-      ctx.request.fields.price = this.config.orderPrice(product);
-      const entity = await Model.create(ctx.request.fields);
-      await utils.act(entity, 'customer-create');
+      const products: any[] = [];
+      for (const id of ctx.request.fields.products) {
+        const product = await ProductModel.findById(id).exec();
+        if (!product) throw Boom.badData(this.config.errors.productNotFound);
+        products.push(product);
+      }
+      const orders: any[] = [];
+      for (const product of products) {
+        const price = this.config.orderPrice(product);
+        const order = await OrderModel.create({
+          product: product._id,
+          price: price,
+          __auth: ctx.request.auth._id,
+        });
+        await utils.act(order, 'customer-create');
+        orders.push(order);
+      }
+      const entity = await Model.create({
+        orders: orders.map(x => x._id),
+      });
       response(ctx, 201, entity);
     } catch (e) {
       handleError(ctx, e);
@@ -82,12 +90,13 @@ export default class Controller {
   };
 
   // Actions
-  public action = async (ctx: IContext) => {
+  public cancel = async (ctx: IContext) => {
     const entity: any = await Model.findById(ctx.params.id).exec();
     if (!entity) throw Boom.notFound();
-    const action: string = ctx.request.fields.action;
+    const action: string = 'customer-cancel';
     try {
-      await utils.act(entity, action, ctx.request.fields.msg, ctx.request);
+      for (const order of entity.orders)
+        await utils.act(order, action, ctx.request.fields.msg, ctx.request);
       response(ctx, 200, entity);
     } catch (e) {
       handleError(ctx, e);
