@@ -68,6 +68,7 @@ export default class Controller {
       }
       const entity = await Model.create({
         orders: orders.map(x => x._id),
+        __auth: ctx.request.auth._id,
       });
       response(ctx, 201, entity);
     } catch (e) {
