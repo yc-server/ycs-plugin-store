@@ -7,6 +7,7 @@ import { routes as filterRoutes } from './filter/router';
 import { routes as productRouters } from './product/router';
 import { routes as orderRouters } from './order/router';
 import { routes as orderLogRouters } from './order_log/router';
+import { routes as orderWrapRouters } from './order_wrap/router';
 
 export async function setupRouter(app: Ycs): Promise<Router[]> {
   const config: IConfig = app.config.store;
@@ -17,7 +18,8 @@ export async function setupRouter(app: Ycs): Promise<Router[]> {
     filterRoutes(config),
     productRouters(config),
     orderRouters(config),
-    orderLogRouters(config)
+    orderLogRouters(config),
+    orderWrapRouters(config),
   );
 
   return routers;
