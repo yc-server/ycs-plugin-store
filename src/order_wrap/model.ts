@@ -5,7 +5,7 @@ const schema = new Schema(
     orders: [
       {
         type: Schema.Types.ObjectId,
-        ref: '__store_orders',
+        ref: '__store_order',
       },
     ],
     status: {
