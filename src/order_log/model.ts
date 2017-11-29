@@ -4,7 +4,7 @@ const schema = new Schema(
   {
     order: {
       type: Schema.Types.ObjectId,
-      ref: '__store_order'
+      ref: '__store_order',
     },
     action: {
       type: String,

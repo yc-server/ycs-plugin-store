@@ -14,7 +14,7 @@ export async function act(
     msg: msg,
     extra: extra,
   });
-  for(const order of entity.orders) {
+  for (const order of entity.orders) {
     const o = await Order.findById(order).exec();
     await subAct(o, action, msg, extra);
   }
