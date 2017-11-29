@@ -4,6 +4,7 @@ import { Boom, handleError } from '@ycs/core/lib/errors';
 import { response } from '@ycs/core/lib/response';
 import Model from './model';
 import { IConfig } from '../config';
+import Order from '../order/model';
 
 export default class Controller {
   constructor(private config: IConfig) {}
@@ -65,6 +66,25 @@ export default class Controller {
       if (!entity) throw Boom.notFound();
       await entity.remove();
       response(ctx, 204);
+    } catch (e) {
+      handleError(ctx, e);
+    }
+  };
+
+  // Gets logs by order
+  public order = async (ctx: IContext) => {
+    try {
+      if (
+        !await Order.count({
+          _id: ctx.params.id,
+          __auth: ctx.request.auth._id,
+        }).exec()
+      )
+        throw Boom.forbidden();
+      const paginateResult = await paginate(Model, ctx, {
+        order: ctx.params.id,
+      });
+      response(ctx, 200, paginateResult);
     } catch (e) {
       handleError(ctx, e);
     }
