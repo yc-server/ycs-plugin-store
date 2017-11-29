@@ -2,9 +2,9 @@ import { IModel, Model, Schema } from '@ycs/core/lib/db';
 
 const schema = new Schema(
   {
-    order: {
+    orderWrap: {
       type: Schema.Types.ObjectId,
-      ref: '__store_order'
+      ref: '__store_order_wrap'
     },
     action: {
       type: String,
@@ -32,7 +32,7 @@ const schema = new Schema(
 );
 
 export default Model({
-  name: '__store_order_log',
+  name: '__store_order_wrap_log',
   auth: false,
   schema,
 });

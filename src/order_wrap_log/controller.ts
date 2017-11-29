@@ -4,10 +4,10 @@ import { Boom, handleError } from '@ycs/core/lib/errors';
 import { response } from '@ycs/core/lib/response';
 import Model from './model';
 import { IConfig } from '../config';
-import Order from '../order/model';
+import OrderWrap from '../order_wrap/model';
 
 export default class Controller {
-  constructor(private config: IConfig) {}
+  constructor(private config: IConfig) { }
   // Gets a list of Models
   public index = async (ctx: IContext) => {
     try {
@@ -71,17 +71,15 @@ export default class Controller {
     }
   };
 
-
-
-  // Gets logs by order
-  public order = async (ctx: IContext) => {
+  // Gets logs by wrap
+  public wrap = async (ctx: IContext) => {
     try {
-      if (!await Order.count({
+      if (!await OrderWrap.count({
         _id: ctx.params.id,
         __auth: ctx.request.auth._id
       }).exec()) throw Boom.forbidden();
       const paginateResult = await paginate(Model, ctx, {
-        order: ctx.params.id
+        orderWrap: ctx.params.id
       });
       response(ctx, 200, paginateResult);
     } catch (e) {

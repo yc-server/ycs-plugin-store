@@ -10,12 +10,6 @@ const schema = new Schema(
       type: Number,
       required: true,
     },
-    logs: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: '__store_order_log',
-      },
-    ],
     status: {
       type: String,
       enum: [

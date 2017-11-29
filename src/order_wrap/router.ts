@@ -78,13 +78,29 @@ export function routes(config: IConfig) {
         type: 'hasRoles',
         roles: config.roles,
       },
-      controller: controller.cancel,
+      controller: controller.action,
       tags: ['__store_order_wrap'],
-      summary: 'Cancel orders',
-      description: 'Cancel orders',
+      summary: 'Custom action',
+      description: 'Custom action',
       consumes: ['application/json', 'application/xml'],
       produces: ['application/json', 'application/xml'],
-      parameters: [],
+      parameters: [
+        {
+          in: 'body',
+          name: 'body',
+          required: true,
+          schema: {
+            type: 'object',
+            properties: {
+              action: {
+                type: 'string',
+                required: true,
+              },
+            },
+            xml: { name: 'xml' },
+          },
+        },
+      ],
       responses: {
         201: {
           description: 'Successful operation',

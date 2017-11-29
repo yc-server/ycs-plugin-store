@@ -6,7 +6,7 @@ import Model from './model';
 import ProductModel from '../product/model';
 import OrderModel from '../order/model';
 import { IConfig } from '../config';
-import * as utils from '../order/utils';
+import * as utils from './utils';
 
 function isSub(arr: any[], sub: any[]) {
   for (const x of sub) if (!arr.includes(x)) return false;
@@ -14,7 +14,7 @@ function isSub(arr: any[], sub: any[]) {
 }
 
 export default class Controller {
-  constructor(private config: IConfig) {}
+  constructor(private config: IConfig) { }
   // Gets a list of Models
   public index = async (ctx: IContext) => {
     try {
@@ -63,13 +63,14 @@ export default class Controller {
           price: price,
           __auth: ctx.request.auth._id,
         });
-        await utils.act(order, 'customer-create');
         orders.push(order);
       }
       const entity = await Model.create({
         orders: orders.map(x => x._id),
+        price: orders.map(x => x.price).reduce((a, b) => a + b, 0),
         __auth: ctx.request.auth._id,
       });
+      await utils.act(entity, 'customer-create');
       response(ctx, 201, entity);
     } catch (e) {
       handleError(ctx, e);
@@ -91,13 +92,14 @@ export default class Controller {
   };
 
   // Actions
-  public cancel = async (ctx: IContext) => {
+  public action = async (ctx: IContext) => {
     const entity: any = await Model.findById(ctx.params.id).exec();
     if (!entity) throw Boom.notFound();
-    const action: string = 'customer-cancel';
+    const action: string = ctx.request.fields.action;
     try {
-      for (const order of entity.orders)
-        await utils.act(order, action, ctx.request.fields.msg, ctx.request);
+      if (!action.startsWith('customer') && !isSub(ctx.request.auth.roles, this.config.roles))
+        throw Boom.forbidden();
+      await utils.act(entity, action, ctx.request.fields.msg, ctx.request);
       response(ctx, 200, entity);
     } catch (e) {
       handleError(ctx, e);
