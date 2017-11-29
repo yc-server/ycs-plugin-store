@@ -66,7 +66,11 @@ export function routes(config: IConfig) {
       description: 'List logs by wrap',
       consumes: ['application/json', 'application/xml'],
       produces: ['application/json', 'application/xml'],
-      parameters: [Model.docSchema.paginateOptions, Model.docSchema.filters, Model.docSchema.paramId],
+      parameters: [
+        Model.docSchema.paginateOptions,
+        Model.docSchema.filters,
+        Model.docSchema.paramId,
+      ],
       responses: {
         200: {
           description: 'Successful operation',
@@ -142,6 +146,6 @@ export function routes(config: IConfig) {
         '4xx': Model.docSchema.response4xx,
         '5xx': Model.docSchema.response5xx,
       },
-    },
+    }
   );
 }

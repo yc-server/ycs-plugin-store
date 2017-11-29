@@ -71,17 +71,18 @@ export default class Controller {
     }
   };
 
-
-
   // Gets logs by order
   public order = async (ctx: IContext) => {
     try {
-      if (!await Order.count({
-        _id: ctx.params.id,
-        __auth: ctx.request.auth._id
-      }).exec()) throw Boom.forbidden();
+      if (
+        !await Order.count({
+          _id: ctx.params.id,
+          __auth: ctx.request.auth._id,
+        }).exec()
+      )
+        throw Boom.forbidden();
       const paginateResult = await paginate(Model, ctx, {
-        order: ctx.params.id
+        order: ctx.params.id,
       });
       response(ctx, 200, paginateResult);
     } catch (e) {

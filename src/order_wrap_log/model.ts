@@ -4,7 +4,7 @@ const schema = new Schema(
   {
     orderWrap: {
       type: Schema.Types.ObjectId,
-      ref: '__store_order_wrap'
+      ref: '__store_order_wrap',
     },
     action: {
       type: String,

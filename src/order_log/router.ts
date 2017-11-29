@@ -66,7 +66,11 @@ export function routes(config: IConfig) {
       description: 'List logs by order',
       consumes: ['application/json', 'application/xml'],
       produces: ['application/json', 'application/xml'],
-      parameters: [Model.docSchema.paginateOptions, Model.docSchema.filters, Model.docSchema.paramId],
+      parameters: [
+        Model.docSchema.paginateOptions,
+        Model.docSchema.filters,
+        Model.docSchema.paramId,
+      ],
       responses: {
         200: {
           description: 'Successful operation',
