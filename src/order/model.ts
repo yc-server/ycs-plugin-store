@@ -11,10 +11,10 @@ export enum EStatus {
 }
 
 export enum ERefund {
-  None = 'none', 
-  Pending = 'pending', 
-  Rejected = 'rejected', 
-  Processing = 'processing', 
+  None = 'none',
+  Pending = 'pending',
+  Rejected = 'rejected',
+  Processing = 'processing',
   Completed = 'completed',
 }
 
