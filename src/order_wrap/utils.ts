@@ -4,7 +4,7 @@ import Order from '../order/model';
 
 export async function act(
   entity: any,
-  action: string,
+  action: EAction,
   msg?: string,
   extra?: any
 ) {
@@ -71,3 +71,19 @@ export async function act(
       return;
   }
 }
+
+export enum EAction {
+  CustomerCreate = 'customer-create',
+  CustomerRefund = 'customer-refund',
+  CustomerCancel = 'customer-cancel',
+  CustomerSign = 'customer-sign',
+  CustomerComment = 'customer-comment',
+  SupplierAccept = 'supplier-accept',
+  SupplierReject = 'supplier-reject',
+  SupplierComplete = 'supplier-complete',
+  SupplierRefundAccept = 'supplier-refund-accept',
+  SupplierRefundReject = 'supplier-refund-reject',
+  SupplierRefundComplete = 'supplier-refund-complete',
+  SystemError = 'system-error',
+  SystemPay = 'system-pay',
+} 
