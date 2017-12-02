@@ -60,7 +60,7 @@ export default class Controller {
       if (!product) throw Boom.badData(this.config.errors.productNotFound);
       ctx.request.fields.price = this.config.orderPrice(product);
       const entity = await Model.create(ctx.request.fields);
-      await utils.act(entity, 'customer-create');
+      await utils.act(entity, utils.EAction.CustomerCreate);
       response(ctx, 201, entity);
     } catch (e) {
       handleError(ctx, e);
@@ -85,7 +85,7 @@ export default class Controller {
   public action = async (ctx: IContext) => {
     const entity: any = await Model.findById(ctx.params.id).exec();
     if (!entity) throw Boom.notFound();
-    const action: string = ctx.request.fields.action;
+    const action: utils.EAction = ctx.request.fields.action;
     try {
       if (
         !action.startsWith('customer') &&

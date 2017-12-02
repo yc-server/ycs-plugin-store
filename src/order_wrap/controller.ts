@@ -70,7 +70,7 @@ export default class Controller {
         price: orders.map(x => x.price).reduce((a, b) => a + b, 0),
         __auth: ctx.request.auth._id,
       });
-      await utils.act(entity, 'customer-create');
+      await utils.act(entity, utils.EAction.CustomerCreate);
       response(ctx, 201, entity);
     } catch (e) {
       handleError(ctx, e);
@@ -95,7 +95,7 @@ export default class Controller {
   public action = async (ctx: IContext) => {
     const entity: any = await Model.findById(ctx.params.id).exec();
     if (!entity) throw Boom.notFound();
-    const action: string = ctx.request.fields.action;
+    const action: utils.EAction = ctx.request.fields.action;
     try {
       if (
         !action.startsWith('customer') &&
