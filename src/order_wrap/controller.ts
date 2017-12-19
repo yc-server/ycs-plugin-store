@@ -14,7 +14,7 @@ function isSub(arr: any[], sub: any[]) {
 }
 
 export default class Controller {
-  constructor(private config: IConfig) { }
+  constructor(private config: IConfig) {}
   // Gets a list of Models
   public index = async (ctx: IContext) => {
     try {
@@ -104,7 +104,12 @@ export default class Controller {
         if (!isSub(ctx.request.auth.roles, this.config.roles))
           throw Boom.forbidden('No manager permision');
       }
-      await utils.act(entity, action, ctx.request.fields.msg, ctx.request.fields.extra);
+      await utils.act(
+        entity,
+        action,
+        ctx.request.fields.msg,
+        ctx.request.fields.extra
+      );
       response(ctx, 200, entity);
     } catch (e) {
       handleError(ctx, e);
