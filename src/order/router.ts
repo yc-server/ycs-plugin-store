@@ -92,6 +92,12 @@ export function routes(config: IConfig) {
                 type: 'string',
                 required: true,
               },
+              msg: {
+                type: 'string',
+              },
+              extra: {
+                type: 'string',
+              },
             },
             xml: { name: 'xml' },
           },

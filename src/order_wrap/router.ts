@@ -75,7 +75,7 @@ export function routes(config: IConfig) {
       path: '/:id',
       methods: ['post'],
       auth: {
-        type: 'hasRoles',
+        type: 'ownsOrHasRoles',
         roles: config.roles,
       },
       controller: controller.action,
@@ -95,6 +95,12 @@ export function routes(config: IConfig) {
               action: {
                 type: 'string',
                 required: true,
+              },
+              msg: {
+                type: 'string',
+              },
+              extra: {
+                type: 'string',
               },
             },
             xml: { name: 'xml' },
