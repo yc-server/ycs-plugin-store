@@ -87,12 +87,12 @@ export default class Controller {
     if (!entity) throw Boom.notFound();
     const action: utils.EAction = ctx.request.fields.action;
     try {
-      if (
-        !action.startsWith('customer') &&
-        !isSub(ctx.request.auth.roles, this.config.roles)
-      )
-        throw Boom.forbidden();
-      await utils.act(entity, action);
+      await utils.act(
+        entity,
+        action,
+        ctx.request.fields.msg,
+        ctx.request.fields.extra
+      );
       response(ctx, 200, entity);
     } catch (e) {
       handleError(ctx, e);
