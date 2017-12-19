@@ -87,11 +87,13 @@ export default class Controller {
     if (!entity) throw Boom.notFound();
     const action: utils.EAction = ctx.request.fields.action;
     try {
-      if (
-        !action.startsWith('customer') &&
-        !isSub(ctx.request.auth.roles, this.config.roles)
-      )
-        throw Boom.forbidden();
+      if (action.startsWith('customer')) {
+        if (!entity.__auth.equals(ctx.request.auth._id))
+          throw Boom.forbidden('No manager permision');
+      } else {
+        if (!isSub(ctx.request.auth.roles, this.config.roles))
+          throw Boom.forbidden('No manager permision');
+      }
       await utils.act(entity, action);
       response(ctx, 200, entity);
     } catch (e) {
