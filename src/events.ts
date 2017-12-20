@@ -5,13 +5,13 @@ import { IConfig } from './config';
 
 export function setupEvents(app: Ycs) {
   const config: IConfig = app.config.store;
-  if(config.orderEvents) {
-    for(const e of config.orderEvents) {
+  if (config.orderEvents) {
+    for (const e of config.orderEvents) {
       orderEvent.on(e.on, e.handler);
     }
   }
-  if(config.orderWrapEvents) {
-    for(const e of config.orderWrapEvents) {
+  if (config.orderWrapEvents) {
+    for (const e of config.orderWrapEvents) {
       orderWrapEvent.on(e.on, e.handler);
     }
   }
