@@ -8,7 +8,6 @@ import { EventEmitter } from 'events';
 export const event = new EventEmitter();
 event.setMaxListeners(0);
 
-
 export async function act(
   entity: any,
   action: EAction,
