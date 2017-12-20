@@ -3,6 +3,7 @@ import { Router } from '@ycs/core/lib/routers';
 import * as colors from 'colors/safe';
 import * as moment from 'moment';
 import { setupRouter } from './router';
+import { setupEvents } from './events';
 
 export const setup = {
   async pre(app: Ycs): Promise<Router[]> {
@@ -14,6 +15,7 @@ export const setup = {
     try {
       const configPath = app.dir + '/plugins/store';
       app.config.store = require(configPath)[process.env.NODE_ENV];
+      setupEvents(app);
       return await setupRouter(app);
     } catch (e) {
       console.error(e);
