@@ -1,4 +1,5 @@
 import { IModel, Model, Schema } from '@ycs/core/lib/db';
+import { EAction } from '../order/utils';
 
 const schema = new Schema(
   {
@@ -9,19 +10,19 @@ const schema = new Schema(
     action: {
       type: String,
       enum: [
-        'customer-create',
-        'customer-refund',
-        'customer-cancel',
-        'customer-sign',
-        'customer-comment',
-        'supplier-accept',
-        'supplier-reject',
-        'supplier-complete',
-        'supplier-refund-accept',
-        'supplier-refund-reject',
-        'supplier-refund-complete',
-        'system-error',
-        'system-pay',
+        EAction.CustomerCreate,
+        EAction.CustomerRefund,
+        EAction.CustomerCancel,
+        EAction.CustomerSign,
+        EAction.CustomerComment,
+        EAction.SupplierAccept,
+        EAction.SupplierReject,
+        EAction.SupplierComplete,
+        EAction.SupplierRefundAccept,
+        EAction.SupplierRefundReject,
+        EAction.SystemRefundComplete,
+        EAction.SystemError,
+        EAction.SystemPay,
       ],
       required: true,
     },
