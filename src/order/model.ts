@@ -53,6 +53,7 @@ const schema = new Schema(
       default: ERefund.None,
     },
     paidBy: String,
+    chargeId: String,
     extra: {},
   },
   { timestamps: {} }
