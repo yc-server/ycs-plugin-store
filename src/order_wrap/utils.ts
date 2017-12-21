@@ -109,6 +109,7 @@ export async function act(
         throw Boom.badData('Current status is not allowed to pay');
       entity.status = EStatus.Paid;
       entity.paidBy = extra.paidBy;
+      entity.chargeId = extra.chargeId;
       await entity.save();
       event.emit(EAction.SystemPay, entity, action, msg, extra);
       break;
